@@ -5,6 +5,8 @@ import { Metadata } from "next";
 import {ProductAttribute, ProductAttributesTable} from "../../../components/product-attributes-table";
 import { AddToCartButton } from "../../../components/add-to-cart-button";
 import prisma from "../../../utils/prisma";
+import {createOrder} from "../../../actions/create-orders";
+import {useState} from "react";
 
 type Props = {
   categorySlug: string;
@@ -54,6 +56,17 @@ const productAttributes: ProductAttribute[] = [
 
 export default async function ProductPage({ params }: NextPageProps<Props>) {
   const product = await getProduct(params.productSlug)
+
+  const handleAddToCartClick  = () => {
+    try {
+      createOrder([{ productId: product.id, quantity: 1 }]);
+      console.log('Product added to cart successfully!');
+
+    } catch (error) {
+      console.log('Error adding product to cart:', error);
+    }
+  };
+
 
   return (
     <SectionContainer wrapperClassName="max-w-5xl">
@@ -124,7 +137,7 @@ export default async function ProductPage({ params }: NextPageProps<Props>) {
               <ProductCardLayout
                 product={product}
                 button={
-                  <Button variant="ghost" className="flex-1 !py-4">
+                  <Button variant={"primary"} onClick={handleAddToCartClick} fullWidth={false}>
                     Ajouter au panier
                   </Button>
                 }
