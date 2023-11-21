@@ -76,6 +76,14 @@ export const removeLine = (productId: number) =>
     return { lines: updatedLines, count: updatedLines.length };
   });
 
+
+export function clearCart() {
+    useCart.setState((data) => ({
+        lines:[],
+        count:0
+    }))
+}
+
 /**
  * Calcul le total du panier 
  * 
